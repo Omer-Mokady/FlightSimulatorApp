@@ -24,10 +24,11 @@ namespace FlightSimulatorApp.controls
         public Joystick()
         {
             InitializeComponent();
+           
         }
 
         private void centerKnob_Completed(object sender, EventArgs e) {
-        
+    
         }
 
     }

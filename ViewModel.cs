@@ -10,7 +10,7 @@ namespace FlightSimulatorApp
 {
     class ViewModel : INotifyPropertyChanged
     {
-        private IMainModel model;
+        public IMainModel model;
         public ViewModel(IMainModel model)
         {
             this.model = model;

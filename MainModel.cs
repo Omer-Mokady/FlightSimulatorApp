@@ -36,6 +36,9 @@ namespace FlightSimulatorApp
         double AltimeterAltitude { get; set; }
 
         // activators
+        void UpdateThrottle(double value);
+        void UpdateAileron(double value);
+
 
     }
     class MainModel : IMainModel
@@ -80,7 +83,7 @@ namespace FlightSimulatorApp
             {
                 while (!stopRunning)
                 {
-                    Console.WriteLine("inside Start loop - main model");
+                    //Console.WriteLine("inside Start loop - main model");
                     telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n"); //1
                     HeadingDeg = Double.Parse(telnetClient.read());
 
@@ -130,7 +133,7 @@ namespace FlightSimulatorApp
             {
                 headingDeg = value;
                 // ??????????????????????????????????????????????
-                Console.WriteLine("HeadingDeg " + +value);
+                //Console.WriteLine("HeadingDeg " + value);
                 NotifyPropertyChanged("HeadingDeg");
             }
         }
@@ -145,7 +148,7 @@ namespace FlightSimulatorApp
             set
             {
                 gpsVerticalSpeed = value;
-                Console.WriteLine("GpsVerticalSpeed " + value);
+                //Console.WriteLine("GpsVerticalSpeed " + value);
                 NotifyPropertyChanged("GpsVerticalSpeed");
             }
         }
@@ -160,7 +163,7 @@ namespace FlightSimulatorApp
             set
             {
                 gpsGroundSpeed = value;
-                Console.WriteLine("GpsGroundSpeed " + value);
+                //Console.WriteLine("GpsGroundSpeed " + value);
                 NotifyPropertyChanged("GpsGroundSpeed");
             }
         }
@@ -174,7 +177,7 @@ namespace FlightSimulatorApp
             set
             {
                 airSpeed = value;
-                Console.WriteLine("AirSpeed " + value);
+                //Console.WriteLine("AirSpeed " + value);
                 NotifyPropertyChanged("AirSpeed");
             }
         }
@@ -189,7 +192,7 @@ namespace FlightSimulatorApp
             set
             {
                 gpsAltitude = value;
-                Console.WriteLine("GpsAltitude " + value);
+                //Console.WriteLine("GpsAltitude " + value);
                 NotifyPropertyChanged("GpsAltitude");
             }
         }
@@ -204,7 +207,7 @@ namespace FlightSimulatorApp
             set
             {
                 internalRollDeg = value;
-                Console.WriteLine("InternalRollDeg " + value);
+                //Console.WriteLine("InternalRollDeg " + value);
                 NotifyPropertyChanged("InternalRollDeg");
             }
         }
@@ -219,7 +222,7 @@ namespace FlightSimulatorApp
             set
             {
                 internalPitchDeg = value;
-                Console.WriteLine("InternalPitchDeg " + value);
+                //Console.WriteLine("InternalPitchDeg " + value);
                 NotifyPropertyChanged("InternalPitchDeg");
             }
         }
@@ -237,6 +240,23 @@ namespace FlightSimulatorApp
                 NotifyPropertyChanged("AltimeterAltitude " + value);
             }
         }
+
+        public void UpdateThrottle(double value)
+        {
+            telnetClient.write("set /controls/engines/current-engine/throttle " + value + "\n");
+            // had to put it for the simulator from telegram
+            telnetClient.read();
+        }
+
+        public void UpdateAileron(double value)
+        {
+            telnetClient.write("set /controls/flight/aileron " + value + "\n");
+            // had to put it for the simulator from telegram
+            telnetClient.read();
+        }
+
+
+        
 
     }
     class MyTelnetClient : ITelnetClient
@@ -266,7 +286,7 @@ namespace FlightSimulatorApp
         {
             //IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(defaultIP), defaultPort);
-            Console.WriteLine("inside client");
+            //Console.WriteLine("inside client");
             //while the server is connected.
             while (!isConnected)
             {
@@ -274,11 +294,11 @@ namespace FlightSimulatorApp
                 {
                     this.client.Connect(endPoint);
                     this.isConnected = true;
-                    Console.WriteLine("Server is connected.");
+                    //Console.WriteLine("Server is connected.");
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Couldn't connect to server.");
+                    //Console.WriteLine("Couldn't connect to server.");
                 }
             }
         }
@@ -299,7 +319,8 @@ namespace FlightSimulatorApp
         public void write(string userCommand)
         {
             byte[] dataToSend = new byte[1024];
-            byte[] BytesArr;
+            // byte[] BytesArr;
+            byte[] BytesArr = new byte[1024];
             NetworkStream networkStream = this.client.GetStream();
             ASCIIEncoding aSCII = new ASCIIEncoding();
             BytesArr = aSCII.GetBytes(userCommand); // encoding the user's command into the buffer.
