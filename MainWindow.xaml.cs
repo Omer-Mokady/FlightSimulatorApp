@@ -20,12 +20,19 @@ namespace FlightSimulatorApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        ViewModel vm;
+        private MainModel model;
+        private MyTelnetClient client;
+        private ViewModel vm;
+        private MapViewModel mapVm;
         public MainWindow()
         {
             InitializeComponent();
-            vm = new ViewModel(new MainModel(new MyTelnetClient()));
+            client = new MyTelnetClient();
+            model = new MainModel(client);
+            vm = new ViewModel(model);
+            mapVm = new MapViewModel(model);
             DataContext = vm;
+            myMapObject.DataContext = mapVm;
             vm.model.connect("127.0.0.1", 5402);
             vm.model.start();
 

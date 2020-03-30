@@ -7,6 +7,7 @@ using System.Threading;
 using System.ComponentModel;
 using System.Net.Sockets;
 using System.Net;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulatorApp
 {
@@ -34,7 +35,9 @@ namespace FlightSimulatorApp
         double InternalRollDeg { get; set; }
         double InternalPitchDeg { get; set; }
         double AltimeterAltitude { get; set; }
-
+        double Latitude { get; set; }
+        double Longtitude { get; set; }
+        Location Location { get; set; }
         // activators
         void UpdateThrottle(double value);
         void UpdateAileron(double value);
@@ -44,7 +47,6 @@ namespace FlightSimulatorApp
     class MainModel : IMainModel
     {
         ITelnetClient telnetClient;
-
         volatile bool stopRunning;
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
@@ -108,6 +110,13 @@ namespace FlightSimulatorApp
                     telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");//8
                     AltimeterAltitude = Double.Parse(telnetClient.read());
 
+                    telnetClient.write("get /position/latitude-deg\n"); // x value of the pin. (x,y)
+                    Latitude = Double.Parse(telnetClient.read());
+
+                    telnetClient.write("get /position/longitude-deg\n"); // y value of the pin. (x,y)
+                    Longtitude = Double.Parse(telnetClient.read());
+
+                    Location = new Location(latitude, longitude);
                     // reads 5 times per second.
                     Thread.Sleep(200);
                 }
@@ -119,6 +128,49 @@ namespace FlightSimulatorApp
             if (this.PropertyChanged != null)
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
+        }
+
+        private double latitude;
+        public double Latitude
+        {
+            get
+            {
+                return latitude;
+            }
+            set
+            {
+                latitude = value;
+                NotifyPropertyChanged("Latitude");
+            }
+        }
+
+        private double longitude;
+        public double Longtitude
+        {
+            get
+            {
+                return longitude;
+            }
+            set
+            {
+                longitude = value;
+                NotifyPropertyChanged("Longtitude");
+            }
+        }
+
+        private Location location;
+        public Location Location
+        {
+            get
+            {
+                return location;
+            }
+            set
+            {
+                Console.WriteLine("MainModel->Location->set " + value);
+                location = value;
+                NotifyPropertyChanged("Location");
             }
         }
 
