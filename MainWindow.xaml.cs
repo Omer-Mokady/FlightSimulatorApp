@@ -41,12 +41,14 @@ namespace FlightSimulatorApp
 
         private void throttleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            vm.model.UpdateThrottle(e.NewValue);
+            //vm.model.UpdateThrottle();
+            vm.VMUpadteThrottle(e.NewValue);
         }
 
         private void aileronSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            vm.model.UpdateAileron(e.NewValue);
+            //vm.model.UpdateAileron(e.NewValue);
+            vm.VMUpadteAileron(e.NewValue);
         }
     }
 }

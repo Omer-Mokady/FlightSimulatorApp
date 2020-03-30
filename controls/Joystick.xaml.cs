@@ -26,10 +26,51 @@ namespace FlightSimulatorApp.controls
             InitializeComponent();
            
         }
+        private Point startPoint = new Point();
 
         private void centerKnob_Completed(object sender, EventArgs e) {
     
         }
 
+        private void Knob_MouseMove(object sender, MouseEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                double xValue = e.GetPosition(this).X - startPoint.X;
+                double yValue = e.GetPosition(this).Y - startPoint.Y;
+                //Console.WriteLine("xvalue = " + xValue + "yvalue = " + yValue);
+                //Console.WriteLine("Base.Width / 2 = " + (Base.Width / 2));
+
+                
+                if (Math.Sqrt((xValue*xValue) + (yValue*yValue)) < blackCircle.Width / 2)
+                {
+                    //Console.WriteLine("inside2");
+
+                    knobPosition.X = xValue;
+                    knobPosition.Y = yValue;
+                }
+
+            }
+        }
+
+        private void Knob_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                Console.WriteLine("mouseDown");
+
+                // initializing start Point
+                startPoint = e.GetPosition(this);
+            }
+        }
+
+        private void Knob_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Console.WriteLine("mouse up");
+
+            knobPosition.X = 0;
+            knobPosition.Y = 0;
+        }
     }
 }

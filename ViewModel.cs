@@ -118,6 +118,16 @@ namespace FlightSimulatorApp
             }
         }
 
+        public void VMUpadteThrottle(double value)
+        {
+            model.UpdateThrottle(value);
+        }
+
+        public void VMUpadteAileron(double value)
+        {
+            model.UpdateAileron(value);
+        }
+
 
 
 
