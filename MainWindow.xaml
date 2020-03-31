@@ -18,7 +18,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- map -->
-        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="AliceBlue">
+        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="1" Background="AliceBlue">
             <!--TextBlock Foreground="black" FontSize="25" Text="map" VerticalAlignment="Center" HorizontalAlignment="Center"/-->
                 <Controls:Map x:Name="myMapObject"/>
         </Border>
