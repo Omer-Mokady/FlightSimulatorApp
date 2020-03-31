@@ -72,51 +72,31 @@ namespace FlightSimulatorApp
         }
 
         private double aileron;
-        private double VM_Aileron
+        public double VM_Aileron
         {
             get { return aileron; }
             set
             {
                 aileron = value;
+                model.UpdateAileron(aileron);
+
                 // model.func?
             }
         }
 
         private double throttle;
-        private double VM_Throttle
+        public double VM_Throttle
         {
             get { return throttle; }
             set
             {
                 throttle = value;
+                model.UpdateThrottle(throttle);
                 // model.func?
             }
         }
 
 
-        // to make one VM_Location instead rudder and elevator? eli - 4 - gimel- 10:15
-
-        private double rudder;
-        private double VM_Rudder
-        {
-            get { return rudder; }
-            set
-            {
-                rudder = value;
-                // model.func?
-            }
-        }
-
-        private double elevator;
-        private double VM_Elevator
-        {
-            get { return elevator; }
-            set
-            {
-                elevator = value;
-                // model.func?
-            }
-        }
 
         public void VMUpadteThrottle(double value)
         {

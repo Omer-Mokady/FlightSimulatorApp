@@ -41,6 +41,8 @@ namespace FlightSimulatorApp
         // activators
         void UpdateThrottle(double value);
         void UpdateAileron(double value);
+        void UpdateRudder(double value);
+        void UpdateElevator(double value);
 
 
     }
@@ -168,7 +170,7 @@ namespace FlightSimulatorApp
             }
             set
             {
-                Console.WriteLine("MainModel->Location->set " + value);
+                //Console.WriteLine("MainModel->Location->set " + value);
                 location = value;
                 NotifyPropertyChanged("Location");
             }
@@ -307,9 +309,19 @@ namespace FlightSimulatorApp
             telnetClient.read();
         }
 
-
+        public void UpdateRudder(double value)
+        {
+            telnetClient.write("set /controls/flight/rudder " + value + "\n");
+            // had to put it for the simulator from telegram
+            telnetClient.read();
+        }
         
-
+        public void UpdateElevator(double value)
+        {
+            telnetClient.write("set /controls/flight/elevator " + value + "\n");
+            // had to put it for the simulator from telegram
+            telnetClient.read();
+        }
     }
     class MyTelnetClient : ITelnetClient
     {

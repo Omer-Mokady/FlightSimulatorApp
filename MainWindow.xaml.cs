@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
+
 namespace FlightSimulatorApp
 {
     /// <summary>
@@ -24,6 +26,9 @@ namespace FlightSimulatorApp
         private MyTelnetClient client;
         private ViewModel vm;
         private MapViewModel mapVm;
+        //
+        private JoystickViewModel joystickVm;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -31,8 +36,13 @@ namespace FlightSimulatorApp
             model = new MainModel(client);
             vm = new ViewModel(model);
             mapVm = new MapViewModel(model);
+            //
+            joystickVm = new JoystickViewModel(model);
             DataContext = vm;
             myMapObject.DataContext = mapVm;
+            joystickObject.DataContext = joystickVm;
+
+
             vm.model.connect("127.0.0.1", 5402);
             vm.model.start();
 
@@ -48,14 +58,14 @@ namespace FlightSimulatorApp
 
         private void throttleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //vm.model.UpdateThrottle();
-            vm.VMUpadteThrottle(e.NewValue);
+
+            //vm.VMUpadteThrottle(e.NewValue);
         }
 
         private void aileronSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //vm.model.UpdateAileron(e.NewValue);
-            vm.VMUpadteAileron(e.NewValue);
+
+            //vm.VMUpadteAileron(e.NewValue);
         }
     }
 }

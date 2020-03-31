@@ -34,7 +34,8 @@ namespace FlightSimulatorApp.controls
 
         private void Knob_MouseMove(object sender, MouseEventArgs e)
         {
-            if(e.LeftButton == MouseButtonState.Pressed)
+            //if(e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 double xValue = e.GetPosition(this).X - startPoint.X;
                 double yValue = e.GetPosition(this).Y - startPoint.Y;
@@ -48,6 +49,8 @@ namespace FlightSimulatorApp.controls
 
                     knobPosition.X = xValue;
                     knobPosition.Y = yValue;
+                    Console.WriteLine("knobPosition.X = " + knobPosition.X);
+                    Console.WriteLine("knobPosition.Y = " + knobPosition.Y);
                 }
 
             }
@@ -58,7 +61,7 @@ namespace FlightSimulatorApp.controls
 
             if (e.ChangedButton == MouseButton.Left)
             {
-                Console.WriteLine("mouseDown");
+                //Console.WriteLine("mouseDown");
 
                 // initializing start Point
                 startPoint = e.GetPosition(this);
@@ -67,7 +70,7 @@ namespace FlightSimulatorApp.controls
 
         private void Knob_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Console.WriteLine("mouse up");
+            //Console.WriteLine("mouse up");
 
             knobPosition.X = 0;
             knobPosition.Y = 0;
