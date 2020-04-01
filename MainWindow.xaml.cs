@@ -67,5 +67,7 @@ namespace FlightSimulatorApp
 
             //vm.VMUpadteAileron(e.NewValue);
         }
+
+
     }
 }
