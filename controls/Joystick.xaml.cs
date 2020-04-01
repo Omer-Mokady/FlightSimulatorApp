@@ -49,8 +49,8 @@ namespace FlightSimulatorApp.controls
 
                     knobPosition.X = xValue;
                     knobPosition.Y = yValue;
-                    Console.WriteLine("knobPosition.X = " + knobPosition.X);
-                    Console.WriteLine("knobPosition.Y = " + knobPosition.Y);
+                    //Console.WriteLine("knobPosition.X = " + knobPosition.X);
+                    //Console.WriteLine("knobPosition.Y = " + knobPosition.Y);
                 }
 
             }

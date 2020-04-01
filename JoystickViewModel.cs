@@ -38,7 +38,7 @@ namespace FlightSimulatorApp
             set
             {
                 rudder = value;
-                Console.WriteLine("rudder=" + rudder);
+                //Console.WriteLine("rudder=" + rudder);
                 model.UpdateRudder(rudder);
             }
         }
@@ -50,7 +50,7 @@ namespace FlightSimulatorApp
             set
             {
                 elevator = value;
-                Console.WriteLine("elevator=" + elevator);
+                //Console.WriteLine("elevator=" + elevator);
                 model.UpdateElevator(elevator);
             }
         }

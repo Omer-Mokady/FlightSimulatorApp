@@ -66,6 +66,11 @@ namespace FlightSimulatorApp
             get { return model.InternalPitchDeg; }
         }
 
+        public string VM_StrException
+        {
+            get { return model.StrException; }
+        }
+
         public double VM_AltimeterAltitude
         {
             get { return model.AltimeterAltitude; }
@@ -107,6 +112,8 @@ namespace FlightSimulatorApp
         {
             model.UpdateAileron(value);
         }
+
+        
 
 
 

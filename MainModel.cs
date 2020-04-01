@@ -38,6 +38,7 @@ namespace FlightSimulatorApp
         double Latitude { get; set; }
         double Longtitude { get; set; }
         Location Location { get; set; }
+        string StrException { get; set; }
         // activators
         void UpdateThrottle(double value);
         void UpdateAileron(double value);
@@ -81,6 +82,8 @@ namespace FlightSimulatorApp
         /// <summary>
         /// the main loop - reading data from the server 5 times per seccond.
         /// </summary>
+        double tempLatitude;
+        double tempLongitude;
         public void start()
         {
             new Thread(delegate ()
@@ -113,10 +116,31 @@ namespace FlightSimulatorApp
                     AltimeterAltitude = Double.Parse(telnetClient.read());
 
                     telnetClient.write("get /position/latitude-deg\n"); // x value of the pin. (x,y)
-                    Latitude = Double.Parse(telnetClient.read());
+                    tempLatitude = Double.Parse(telnetClient.read());
+                    if ((tempLatitude>=-90) && (tempLatitude<=32.06))
+                    {
+                        Latitude = tempLatitude;
+                        //Console.WriteLine("latitude = " + Latitude);
+                    }
+                    else
+                    {
+                        StrException = "altitude is not in the range";
+                        //Console.WriteLine(StrException);
+                    }
+                    //Latitude = Double.Parse(telnetClient.read());
 
                     telnetClient.write("get /position/longitude-deg\n"); // y value of the pin. (x,y)
-                    Longtitude = Double.Parse(telnetClient.read());
+                    tempLongitude = Double.Parse(telnetClient.read());
+                    if ((tempLongitude >= -180) && (tempLongitude <= 35))
+                    {
+                        Longtitude = tempLongitude;
+                        Console.WriteLine("longitude = " + longitude);
+                    } else
+                    {
+                        StrException = "longitude is not in the range";
+                        //Console.WriteLine(StrException);
+                    }
+                    //Longtitude = Double.Parse(telnetClient.read());
 
                     Location = new Location(latitude, longitude);
                     // reads 5 times per second.
@@ -144,6 +168,20 @@ namespace FlightSimulatorApp
             {
                 latitude = value;
                 NotifyPropertyChanged("Latitude");
+            }
+        }
+
+        private string strException;
+        public string StrException
+        {
+            get
+            {
+                return strException;
+            }
+            set
+            {
+                strException = value;
+                NotifyPropertyChanged("StrException");
             }
         }
 

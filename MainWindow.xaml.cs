@@ -68,6 +68,9 @@ namespace FlightSimulatorApp
             //vm.VMUpadteAileron(e.NewValue);
         }
 
-
+        private void cleanButtom_Click(object sender, RoutedEventArgs e)
+        {
+            exceptionsText.Clear();
+        }
     }
 }
