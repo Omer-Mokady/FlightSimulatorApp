@@ -28,7 +28,10 @@ namespace FlightSimulatorApp
         private MapViewModel mapVm;
         //
         private JoystickViewModel joystickVm;
+        private bool isClicked = false;
 
+        private string ipAddress;
+        private int portNumber;
         public MainWindow()
         {
             InitializeComponent();
@@ -48,8 +51,8 @@ namespace FlightSimulatorApp
            
 
 
-            vm.model.connect("127.0.0.1", 5402);
-            vm.model.start();
+            //vm.model.connect("127.0.0.1", 5402);
+            //vm.model.start();
 
 
         
@@ -76,6 +79,30 @@ namespace FlightSimulatorApp
         private void cleanButtom_Click(object sender, RoutedEventArgs e)
         {
             exceptionsText.Clear();
+        }
+
+        private void ConnectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isClicked)
+            {
+                ConnectionWindow connect = new ConnectionWindow();
+                connect.ShowDialog();
+                isClicked = true;
+                this.ipAddress = connect.GetIp();
+                this.portNumber = connect.GetPort();
+                exceptionsText.FontSize = 20;
+                vm.model.connect(this.ipAddress, this.portNumber);
+                vm.model.start();
+            }
+        }
+
+        private void disconnectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (isClicked)
+            {
+                isClicked = false;
+                vm.model.disconnect();
+            }
         }
     }
 }
