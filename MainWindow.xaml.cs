@@ -39,8 +39,13 @@ namespace FlightSimulatorApp
             //
             joystickVm = new JoystickViewModel(model);
             DataContext = vm;
+
+
             myMapObject.DataContext = mapVm;
             joystickObject.DataContext = joystickVm;
+
+
+           
 
 
             vm.model.connect("127.0.0.1", 5402);

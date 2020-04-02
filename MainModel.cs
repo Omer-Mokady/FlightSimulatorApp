@@ -62,6 +62,9 @@ namespace FlightSimulatorApp
             this.telnetClient = client;
             this.stopRunning = false;
         }
+
+
+
         /// <summary>
         /// connecting the telnet client to a server.
         /// </summary>
@@ -90,18 +93,66 @@ namespace FlightSimulatorApp
             {
                 while (!stopRunning)
                 {
-                    //Console.WriteLine("inside Start loop - main model");
+                    
                     telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n"); //1
-                    HeadingDeg = Double.Parse(telnetClient.read());
+                    try
+                    {
+                        //HeadingDeg = Double.Parse(telnetClient.read());
+                        string a = telnetClient.read();
+                        HeadingDeg = Double.Parse(a);
+
+                        //Console.WriteLine("1, " + a);
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of heading";
+                        Console.WriteLine("heading, " + telnetClient.read());
+                        
+                    }
 
                     telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");//2
-                    GpsVerticalSpeed = Double.Parse(telnetClient.read());
+                    try
+                    {
+                        GpsVerticalSpeed = Double.Parse(telnetClient.read());
+
+
+
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of vertical speed";
+                        Console.WriteLine("vertical-speed, " + telnetClient.read());
+                    }
 
                     telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");//3
-                    GpsGroundSpeed = Double.Parse(telnetClient.read());
+                    try
+                    {
+                        GpsGroundSpeed = Double.Parse(telnetClient.read());
+
+
+
+
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of GpsGroundSpeed";
+                        Console.WriteLine("GpsGroundSpeed, " + telnetClient.read());
+                    }
 
                     telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");//4
-                    AirSpeed = Double.Parse(telnetClient.read());
+                    try
+                    {
+                        AirSpeed = Double.Parse(telnetClient.read());
+
+
+
+
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of AirSpeed";
+                        Console.WriteLine("AirSpeed, " + telnetClient.read());
+                    }
 
                     telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");//5
                     GpsAltitude = Double.Parse(telnetClient.read());
@@ -134,7 +185,7 @@ namespace FlightSimulatorApp
                     if ((tempLongitude >= -180) && (tempLongitude <= 35))
                     {
                         Longtitude = tempLongitude;
-                        Console.WriteLine("longitude = " + longitude);
+                        //Console.WriteLine("longitude = " + longitude);
                     } else
                     {
                         StrException = "longitude is not in the range";
@@ -337,7 +388,8 @@ namespace FlightSimulatorApp
         {
             telnetClient.write("set /controls/engines/current-engine/throttle " + value + "\n");
             // had to put it for the simulator from telegram
-            telnetClient.read();
+            //string b = telnetClient.read();
+            //Console.WriteLine("3, "+b);
         }
 
         public void UpdateAileron(double value)
