@@ -44,6 +44,7 @@ namespace FlightSimulatorApp
         void UpdateAileron(double value);
         void UpdateRudder(double value);
         void UpdateElevator(double value);
+        void SetBoolRunning(bool paramater);
 
 
     }
@@ -51,6 +52,10 @@ namespace FlightSimulatorApp
     {
         ITelnetClient telnetClient;
         volatile bool stopRunning;
+        public void SetBoolRunning(bool parameter)
+        {
+            this.stopRunning = parameter;
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
         /// constructor.
@@ -72,7 +77,22 @@ namespace FlightSimulatorApp
         /// <param name="port">the port number of the server.</param>
         public void connect(string ip, int port)
         {
-            this.telnetClient.connect(ip, port);
+            for(int i=0; i<10; i++)
+            {
+                try
+                {
+                    this.stopRunning = false;
+                    this.telnetClient.connect(ip, port);
+                    StrException = "connected to the server";
+                    break;
+                }
+                catch
+                {
+                    StrException = "can't connect to the server";
+                    Console.WriteLine("can't connect to the server");
+                }
+            }
+            
         }
         /// <summary>
         /// disconnecting from the server.
@@ -81,6 +101,7 @@ namespace FlightSimulatorApp
         {
             this.stopRunning = true;
             this.telnetClient.disconnect();
+            this.telnetClient = new MyTelnetClient();
         }
         /// <summary>
         /// the main loop - reading data from the server 5 times per seccond.
@@ -93,82 +114,120 @@ namespace FlightSimulatorApp
             {
                 while (!stopRunning)
                 {
-                    
-                    telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n"); //1
+                    string tempStr;
                     try
                     {
+                        telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n"); //1
                         //HeadingDeg = Double.Parse(telnetClient.read());
-                        string a = telnetClient.read();
-                        HeadingDeg = Double.Parse(a);
+                        tempStr = telnetClient.read();
+                        HeadingDeg = Double.Parse(tempStr);
 
                         //Console.WriteLine("1, " + a);
                     }
                     catch
                     {
                         StrException = "error - can't update the current value of heading";
-                        Console.WriteLine("heading, " + telnetClient.read());
+                        //Console.WriteLine("heading, " + telnetClient.read());
                         
                     }
 
-                    telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");//2
                     try
                     {
-                        GpsVerticalSpeed = Double.Parse(telnetClient.read());
-
-
-
+                        telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");//2
+                        tempStr = telnetClient.read();
+                        GpsVerticalSpeed = Double.Parse(tempStr);
                     }
                     catch
                     {
                         StrException = "error - can't update the current value of vertical speed";
-                        Console.WriteLine("vertical-speed, " + telnetClient.read());
+                        //Console.WriteLine("vertical-speed, " + telnetClient.read());
                     }
 
-                    telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");//3
                     try
                     {
-                        GpsGroundSpeed = Double.Parse(telnetClient.read());
-
-
-
-
+                        telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");//3
+                        tempStr = telnetClient.read();
+                        GpsGroundSpeed = Double.Parse(tempStr);
                     }
                     catch
                     {
                         StrException = "error - can't update the current value of GpsGroundSpeed";
-                        Console.WriteLine("GpsGroundSpeed, " + telnetClient.read());
+                        //Console.WriteLine("GpsGroundSpeed, " + telnetClient.read());
                     }
 
-                    telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");//4
                     try
                     {
-                        AirSpeed = Double.Parse(telnetClient.read());
-
-
-
-
+                        telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");//4
+                        tempStr = telnetClient.read();
+                        AirSpeed = Double.Parse(tempStr);
                     }
                     catch
                     {
                         StrException = "error - can't update the current value of AirSpeed";
-                        Console.WriteLine("AirSpeed, " + telnetClient.read());
+                        //Console.WriteLine("AirSpeed, " + telnetClient.read());
                     }
 
-                    telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");//5
-                    GpsAltitude = Double.Parse(telnetClient.read());
+                    try
+                    {
+                        telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");//5
+                        tempStr = telnetClient.read();
+                        GpsAltitude = Double.Parse(tempStr);
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of GpsAltitude";
+                        //Console.WriteLine("GpsAltitude, " + telnetClient.read());
+                    }
 
-                    telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg\n");//6
-                    InternalRollDeg = Double.Parse(telnetClient.read());
+                    try
+                    {
+                        telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg\n");//6
+                        tempStr = telnetClient.read();
+                        InternalRollDeg = Double.Parse(tempStr);
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of InternalRollDeg";
+                        //Console.WriteLine("InternalRollDeg, " + telnetClient.read());
+                    }
 
-                    telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");//7
-                    InternalPitchDeg = Double.Parse(telnetClient.read());
+                    try
+                    {
+                        telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");//7
+                        tempStr = telnetClient.read();
+                        InternalPitchDeg = Double.Parse(tempStr);
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of InternalPitchDeg";
+                        //Console.WriteLine("InternalPitchDeg, " + telnetClient.read());
+                    }
 
-                    telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");//8
-                    AltimeterAltitude = Double.Parse(telnetClient.read());
+                    try
+                    {
+                        telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");//8
+                        tempStr = telnetClient.read();
+                        AltimeterAltitude = Double.Parse(tempStr);
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of AltimeterAltitude";
+                        //Console.WriteLine("AltimeterAltitude, " + telnetClient.read());
+                    }
 
-                    telnetClient.write("get /position/latitude-deg\n"); // x value of the pin. (x,y)
-                    tempLatitude = Double.Parse(telnetClient.read());
-                    if ((tempLatitude>=-90) && (tempLatitude<=32.06))
+                    // update Latitude
+                    try
+                    {
+                        telnetClient.write("get /position/latitude-deg\n"); // x value of the pin. (x,y)
+                        tempStr = telnetClient.read();
+                        tempLatitude = Double.Parse(tempStr);
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of Latitude";
+                        //Console.WriteLine("Latitude, " + telnetClient.read());
+                    }
+                    if ((tempLatitude>=-90) && (tempLatitude<=90))
                     {
                         Latitude = tempLatitude;
                         //Console.WriteLine("latitude = " + Latitude);
@@ -180,9 +239,19 @@ namespace FlightSimulatorApp
                     }
                     //Latitude = Double.Parse(telnetClient.read());
 
-                    telnetClient.write("get /position/longitude-deg\n"); // y value of the pin. (x,y)
-                    tempLongitude = Double.Parse(telnetClient.read());
-                    if ((tempLongitude >= -180) && (tempLongitude <= 35))
+                    // update Longtitude
+                    try
+                    {
+                        telnetClient.write("get /position/longitude-deg\n"); // y value of the pin. (x,y)
+                        tempStr = telnetClient.read();
+                        tempLongitude = Double.Parse(tempStr);
+                    }
+                    catch
+                    {
+                        StrException = "error - can't update the current value of Longtitude";
+                        //Console.WriteLine("Longtitude, " + telnetClient.read());
+                    }
+                    if ((tempLongitude >= -180) && (tempLongitude <= 180))
                     {
                         Longtitude = tempLongitude;
                         //Console.WriteLine("longitude = " + longitude);
@@ -387,6 +456,14 @@ namespace FlightSimulatorApp
         public void UpdateThrottle(double value)
         {
             telnetClient.write("set /controls/engines/current-engine/throttle " + value + "\n");
+            try
+            {
+                telnetClient.read();
+            }
+            catch
+            {
+
+            }
             // had to put it for the simulator from telegram
             //string b = telnetClient.read();
             //Console.WriteLine("3, "+b);
@@ -396,21 +473,42 @@ namespace FlightSimulatorApp
         {
             telnetClient.write("set /controls/flight/aileron " + value + "\n");
             // had to put it for the simulator from telegram
-            telnetClient.read();
+            try
+            {
+                telnetClient.read();
+            }
+            catch
+            {
+
+            }
         }
 
         public void UpdateRudder(double value)
         {
-            telnetClient.write("set /controls/flight/rudder " + value + "\n");
+            telnetClient.write("set /controls/flight/rudder " + (value/84) + "\n");
             // had to put it for the simulator from telegram
-            telnetClient.read();
+            try
+            {
+                telnetClient.read();
+            }
+            catch
+            {
+
+            }
         }
         
         public void UpdateElevator(double value)
         {
-            telnetClient.write("set /controls/flight/elevator " + value + "\n");
+            telnetClient.write("set /controls/flight/elevator " + (value/(-84)) + "\n");
             // had to put it for the simulator from telegram
-            telnetClient.read();
+            try
+            {
+                telnetClient.read();
+            }
+            catch
+            {
+
+            }
         }
     }
     class MyTelnetClient : ITelnetClient
@@ -420,8 +518,8 @@ namespace FlightSimulatorApp
         bool isConnected = false;
 
 
-        string defaultIP = "127.0.0.1";
-        int defaultPort = 5402;
+        //string MyIP = "127.0.0.1";
+        //int MyPort = 5402;
 
         /// <summary>
         /// default Constructor.
@@ -439,22 +537,30 @@ namespace FlightSimulatorApp
         public void connect(string ip, int port)
         {
             //IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(defaultIP), defaultPort);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             //Console.WriteLine("inside client");
             //while the server is connected.
-            while (!isConnected)
+            //while (!isConnected)
+            //{
+            Console.WriteLine("aaa");
+            this.client.Connect(endPoint);
+            Console.WriteLine("bbb");
+            this.isConnected = true;
+            Console.WriteLine("Server is connected.");
+            /*
+            try
             {
-                try
-                {
-                    this.client.Connect(endPoint);
-                    this.isConnected = true;
-                    //Console.WriteLine("Server is connected.");
-                }
-                catch (Exception)
-                {
-                    //Console.WriteLine("Couldn't connect to server.");
-                }
+                this.client.Connect(endPoint);
+                this.isConnected = true;
+                Console.WriteLine("Server is connected.");
             }
+            catch (Exception)
+            {
+                
+                Console.WriteLine("Couldn't connect to server.");
+            }
+            */
+           //} 
         }
 
         /// <summary>
@@ -462,8 +568,10 @@ namespace FlightSimulatorApp
         /// </summary>
         public void disconnect()
         {
+
             this.client.GetStream().Close();
             this.client.Close();
+            //this.client = new TcpClient();
         }
 
         /// <summary>

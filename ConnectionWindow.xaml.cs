@@ -21,11 +21,13 @@ namespace FlightSimulatorApp
     {
         private string userIpAddress;
         private int userPortNumber;
- 
+        //MainModel model;
+
         public ConnectionWindow()
         {
             InitializeComponent();
         }
+
 
         public string GetIp()
         {
@@ -40,7 +42,7 @@ namespace FlightSimulatorApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.userIpAddress = UserIpBox.Text;
-            this.userPortNumber = Int32.Parse(UserPortBox.Text);
+            this.userPortNumber = int.Parse(UserPortBox.Text);
             this.Close();
         }
     }

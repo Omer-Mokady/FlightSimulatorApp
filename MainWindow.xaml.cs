@@ -90,9 +90,15 @@ namespace FlightSimulatorApp
                 isClicked = true;
                 this.ipAddress = connect.GetIp();
                 this.portNumber = connect.GetPort();
-                exceptionsText.FontSize = 20;
-                vm.model.connect(this.ipAddress, this.portNumber);
-                vm.model.start();
+                //exceptionsText.FontSize = 20;
+                try {
+                    vm.model.connect(this.ipAddress, this.portNumber);
+                    //vm.model.SetBoolRunning(false);
+                    vm.model.start();
+                } catch { Console.WriteLine("can't connect in the mainwindow.xaml.cs");
+                }
+                
+                
             }
         }
 
