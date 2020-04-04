@@ -61,19 +61,20 @@ namespace FlightSimulatorApp
             get { return model.InternalRollDeg; }
         }
 
+
         public double VM_InternalPitchDeg
         {
             get { return model.InternalPitchDeg; }
         }
 
-        public string VM_StrException
-        {
-            get { return model.StrException; }
-        }
-
         public double VM_AltimeterAltitude
         {
             get { return model.AltimeterAltitude; }
+        }
+
+        public string VM_StrException
+        {
+            get { return model.StrException; }
         }
 
         private double aileron;

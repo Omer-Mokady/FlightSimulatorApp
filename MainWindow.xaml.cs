@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 
 
@@ -32,6 +33,8 @@ namespace FlightSimulatorApp
 
         private string ipAddress;
         private int portNumber;
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -83,31 +86,54 @@ namespace FlightSimulatorApp
 
         private void ConnectBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!isClicked)
+            Console.WriteLine(model.GetBoolRunning());
+            if (model.GetBoolRunning())
             {
                 ConnectionWindow connect = new ConnectionWindow();
                 connect.ShowDialog();
                 isClicked = true;
                 this.ipAddress = connect.GetIp();
-                this.portNumber = connect.GetPort();
-                //exceptionsText.FontSize = 20;
-                try {
-                    vm.model.connect(this.ipAddress, this.portNumber);
-                    //vm.model.SetBoolRunning(false);
-                    vm.model.start();
-                } catch { Console.WriteLine("can't connect in the mainwindow.xaml.cs");
+                bool access = true;
+                if (connect.GetPort() != null)
+                {
+                    try
+                    {
+                        this.portNumber = int.Parse(connect.GetPort());
+                    }
+                    catch
+                    {
+                        exceptionsText.Text = "error - port can have only digits\ntry again\n";
+                        access = false;
+                    }
+                    if (access)
+                    {
+
+                        vm.model.connect(this.ipAddress, this.portNumber);
+                        //vm.model.start();             
+                    }
+
                 }
-                
-                
+            } else
+            {
+                exceptionsText.Text = "you are already connect\nplease press the disconnect buttom before\n";
             }
+                
+                
+                
+
+
+            
         }
 
         private void disconnectBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (isClicked)
+            if (!model.GetBoolRunning())
             {
-                isClicked = false;
+                //isClicked = false;
                 vm.model.disconnect();
+            } else
+            {
+                exceptionsText.Text = "you are already not connected\n";
             }
         }
     }

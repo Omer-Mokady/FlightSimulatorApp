@@ -20,7 +20,7 @@ namespace FlightSimulatorApp
     public partial class ConnectionWindow : Window
     {
         private string userIpAddress;
-        private int userPortNumber;
+        private string userPortNumber;
         //MainModel model;
 
         public ConnectionWindow()
@@ -34,7 +34,7 @@ namespace FlightSimulatorApp
             return this.userIpAddress;
         }
 
-        public int GetPort()
+        public string GetPort()
         {
             return this.userPortNumber;
         }
@@ -42,7 +42,7 @@ namespace FlightSimulatorApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.userIpAddress = UserIpBox.Text;
-            this.userPortNumber = int.Parse(UserPortBox.Text);
+            this.userPortNumber = UserPortBox.Text;
             this.Close();
         }
     }
