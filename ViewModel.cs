@@ -61,6 +61,7 @@ namespace FlightSimulatorApp
             get { return model.InternalRollDeg; }
         }
 
+   
 
         public double VM_InternalPitchDeg
         {

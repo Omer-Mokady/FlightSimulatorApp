@@ -101,6 +101,7 @@ namespace FlightSimulatorApp
             {
                 StrException = "can't connect to the server";
                 stopRunning = true;
+                this.telnetClient = new MyTelnetClient();
 
             }
 
@@ -113,6 +114,8 @@ namespace FlightSimulatorApp
             this.stopRunning = true;
             this.telnetClient.disconnect();
             this.telnetClient = new MyTelnetClient();
+            StrException = "disconnected";
+
         }
         /// <summary>
         /// the main loop - reading data from the server 5 times per seccond.
@@ -222,23 +225,17 @@ namespace FlightSimulatorApp
                         catch
                         {
                             StrException = "error - can't update the current value of InternalPitchDeg";
-                            //Console.WriteLine("InternalPitchDeg, " + telnetClient.read());
-                            errorCounter++;
                         }
 
                         try
                         {
                             telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");//8
                             tempStr = telnetClient.read();
-                            //Console.WriteLine("altitude is: " + tempStr);
                             AltimeterAltitude = Double.Parse(tempStr);
-                            //Console.WriteLine("altitude is: " + AltimeterAltitude);
                         }
                         catch
                         {
                             StrException = "error - can't update the current value of AltimeterAltitude";
-                            //Console.WriteLine("AltimeterAltitude, " + telnetClient.read());
-                            errorCounter++;
                         }
 
                         // update Latitude
@@ -251,8 +248,6 @@ namespace FlightSimulatorApp
                         catch
                         {
                             StrException = "error - can't update the current value of Latitude";
-                            //Console.WriteLine("Latitude, " + telnetClient.read());
-                            errorCounter++;
                         }
                         if ((tempLatitude >= -90) && (tempLatitude <= 90))
                         {
@@ -262,9 +257,7 @@ namespace FlightSimulatorApp
                         else
                         {
                             StrException = "altitude is not in the range";
-                            //Console.WriteLine(StrException);
                         }
-                        //Latitude = Double.Parse(telnetClient.read());
 
                         // update Longtitude
                         try
@@ -276,20 +269,15 @@ namespace FlightSimulatorApp
                         catch
                         {
                             StrException = "error - can't update the current value of Longtitude";
-                            //Console.WriteLine("Longtitude, " + telnetClient.read());
-                            errorCounter++;
                         }
                         if ((tempLongitude >= -180) && (tempLongitude <= 180))
                         {
                             Longtitude = tempLongitude;
-                            //Console.WriteLine("longitude = " + longitude);
                         }
                         else
                         {
                             StrException = "longitude is not in the range";
-                            //Console.WriteLine(StrException);
                         }
-                        //Longtitude = Double.Parse(telnetClient.read());
 
                         Location = new Location(latitude, longitude);
                         // reads 5 times per second.
@@ -505,8 +493,7 @@ namespace FlightSimulatorApp
 
         public void UpdateThrottle(double value)
         {
-            //string check = "abc";
-            //double num = Double.Parse(check);
+ 
             if(!this.stopRunning)
             {
                 try
@@ -515,7 +502,6 @@ namespace FlightSimulatorApp
                 }
                 catch
                 {
-                    errorCounter++;
                     this.StrException = "error - can't update information about Throttle";
                 }
                 try
@@ -688,7 +674,8 @@ namespace FlightSimulatorApp
             Console.WriteLine("Server is connected.");
 
             this.client.ReceiveTimeout = 10000;
-            this.client.SendTimeout = 1000;
+            //this.stream.ReadTimeout = 5000;
+            //this.client.SendTimeout = 5000;
             this.stream = client.GetStream();
 
             
@@ -722,15 +709,9 @@ namespace FlightSimulatorApp
             //ASCIIEncoding aSCII = new ASCIIEncoding();
             //BytesArr = aSCII.GetBytes(userCommand); // encoding the user's command into the buffer.
             BytesArr = Encoding.ASCII.GetBytes(userCommand);
-            try
-            {
-                this.stream.Write(BytesArr, 0, BytesArr.Length); //sending the data stored inside of BytesArr.
-                this.stream.Flush(); // clean the stream.
-            }
-            catch (System.IO.IOException e)
-            {
-                Console.WriteLine("\nProblem, the server is disconnected\n");
-            }
+            this.stream.Write(BytesArr, 0, BytesArr.Length); //sending the data stored inside of BytesArr.
+            this.stream.Flush(); // clean the stream.
+            
             
 
 
