@@ -27,8 +27,8 @@ namespace FlightSimulatorApp
         private MyTelnetClient client;
         private ViewModel vm;
         private MapViewModel mapVm;
-        //
         private JoystickViewModel joystickVm;
+        private DashboardViewModel dashboardVM;
         private bool isClicked = false;
 
         private string ipAddress;
@@ -42,16 +42,16 @@ namespace FlightSimulatorApp
             model = new MainModel(client);
             vm = new ViewModel(model);
             mapVm = new MapViewModel(model);
+
             //
             joystickVm = new JoystickViewModel(model);
             DataContext = vm;
 
+            dashboardVM = new DashboardViewModel(model);
 
             myMapObject.DataContext = mapVm;
             joystickObject.DataContext = joystickVm;
-
-
-           
+            dashboadObject.DataContext = dashboardVM;
 
 
             //vm.model.connect("127.0.0.1", 5402);

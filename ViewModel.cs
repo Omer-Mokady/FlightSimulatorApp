@@ -32,45 +32,7 @@ namespace FlightSimulatorApp
         }
 
         // properties
-        public double VM_HeadingDeg
-        {
-            get { return model.HeadingDeg; }
-        }
-        public double VM_GpsVerticalSpeed
-        {
-            get { return model.GpsVerticalSpeed; }
-        }
-
-        public double VM_GpsGroundSpeed
-        {
-            get { return model.GpsGroundSpeed; }
-        }
-
-        public double VM_GpsAltitude
-        {
-            get { return model.GpsAltitude; }
-        }
-
-        public double VM_AirSpeed
-        {
-            get { return model.AirSpeed; }
-        }
-
-        public double VM_InternalRollDeg
-        {
-            get { return model.InternalRollDeg; }
-        }
-
-
-        public double VM_InternalPitchDeg
-        {
-            get { return model.InternalPitchDeg; }
-        }
-
-        public double VM_AltimeterAltitude
-        {
-            get { return model.AltimeterAltitude; }
-        }
+        
 
         public string VM_StrException
         {
