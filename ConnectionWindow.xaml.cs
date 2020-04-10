@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Configuration;
 
 namespace FlightSimulatorApp
 {
@@ -26,6 +27,8 @@ namespace FlightSimulatorApp
         public ConnectionWindow()
         {
             InitializeComponent();
+            UserIpBox.Text = ConfigurationManager.AppSettings["DefaultIP"];
+            UserPortBox.Text = ConfigurationManager.AppSettings["DefaultPort"];
         }
 
 
